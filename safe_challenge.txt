@@ -1,0 +1,91 @@
+﻿NOKIA will apply SAFe step by step from now on, all features and enablers together on each ART(Agile Release Train) are going to be planned on PI meeting together.
+
+Let's assume that:
+- All the factors, like the user business value, time criticality and risk deduction/opportunity enablement, are already unified as a single value, which represents profit or cost.
+- All features are required by customers, who will pay for them, and they will bring profits to company.
+- All enablers are not required by customers, and they will only cost money. But some features may depend on them, so they have to be done sometimes.
+- All features and enablers could depend on each others
+
+As the RTE/PO, you have to pick some features and enablers to guarantee NOKIA have the possible maximum profits.
+
+Input: The 1st line is the total number of features and enablers (0<= n <=1000), and then each line represents a feature or enabler, in which the 1st number is the costs (negetive) or profits (positive) value (-1,000,000<= n <=1,000,000), and after it, the numbers are the indices of all the features and enablers on which this one depends. They are separated by spaces.
+
+Output: The 1st line is the company's maximum profits, and then the list of all selected features/enablers, each line has a index of a feature/enabler. If there are multiple solutions for the maximum profits, then choose the one with the least number of items.
+
+The input of your program is 1 argument, the path of a text file, with the content as follow:
+item_num
+item1_dependence_list
+item2_dependence_list
+...
+
+e.g.
+6
+-4
+1
+2 2
+-1 1 2
+-3 3
+5 3 4
+
+The output of your program is a stdout print
+Maximum_profits
+selected_item_index1
+selected_item_index2
+...
+
+e.g.
+3
+1
+2
+3
+4
+6
+
+////////////////////中文分割线////////////////////
+
+
+诺基亚将从现在开始逐步应用SAFe，每个ART（敏捷发布列车）上的所有功能和启用程序将在PI会议上一起计划。
+
+我们假设：
+- 所有的价值因素，如用户业务价值，时间紧迫性和风险降低/机会增加，已被统一为一个数字价值，表示利润或亏损。
+- 客户会为他们需要的feature付款，所以feature将为公司带来利润。
+- 客户不需要所有enabler，所以这些enabler只会消耗成本，即亏损。但是某些feature可能依赖于它们，因此有时必须完成它们。
+- 所有feature和enabler可能相互依赖
+
+作为RTE/PO，您必须选择一些功能和促成因素，以确保NOKIA获得最大利润。
+
+输入：第1行是feature和enabler的总数（0 <= n <= 1000），然后每行代表一个feature或enabler，其中第一个数字是成本（负值）或利润（正值）值（-1,000,000 <= n <= 1,000,000），在此之后，数字是这个所依赖的所有feature和enabler的索引。它们由空格分隔。
+
+输出：第一行是公司的最大利润，然后是所有选定feature/enabler的列表，每行都是一个feature/enabler的索引。如果有多种解决方案可以获得最大利润，那么选择项目数最少的解决方案。
+
+你的程序输入只有一个参数，一个文本文件的路径，包含如下内容:
+item_num
+item1_dependence_list
+item2_dependence_list
+...
+
+例如：
+6
+-4
+1
+2 2
+-1 1 2
+-3 3
+5 3 4
+
+
+你的程序的输出是stdout标准打印输出，包含如下内容，index从1开始：
+Maximum_profits
+selected_item_index1
+selected_item_index2
+...
+
+例如:
+3
+1
+2
+3
+4
+6
+
+

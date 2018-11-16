@@ -1,0 +1,30 @@
+﻿In the following multiplication formula： each letter represents ONE number (0~9). The same letter represents the same number, different letters represent different numbers. For example:
+ACD * BA = CDBE
+
+Please try to program to determine the number combination that makes the entire equation. If there are multiple situations, please give all possible answers.
+
+e.g. 
+The input of your program is 1 argument, the path of a text file, with the content as follow:
+CCD * JC  = FJDHD
+
+The output of your program is a stdout print as follow:
+220 * 82 = 18040
+
+NOTE: keep the spaces as original fomula
+
+////////////////////中文分割线////////////////////
+
+下列乘法算式中：每个字母代表1个数字（0~9）。相同的字母代表相同的数字，不同的字母代表不同的数字。例如：
+    ACD * BA  =  CDBE
+     
+    试编程确定使得整个算式成立的数字组合，如有多种情况，请给出所有可能的答案。
+
+    例如：
+    你的程序输入只有一个参数，一个文本文件的路径，包含如下内容:
+    CCD * JC  = FJDHD
+
+    你的程序的输出是stdout标准打印输出：
+    220 * 82 = 18040
+
+    注意: 保留原有空格
+

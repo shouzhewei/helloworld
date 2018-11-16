@@ -1,0 +1,68 @@
+i﻿
+NOKIA Hangzhou TC has many cloud test line, with index such as 1, 2, 3, ..., testlineNum; It also have many test engineers, with index such as 1, 2, ..., userNum.
+Every test engineer can only use 1 test line at 1 time (1 <= userNum <= testlineNum).
+Every test line can only be assigned to 1 engineer at 1 time.
+Every engineer has different requirements for test line, so the list of test lines are different among engineers.
+e.g.
+Engineers1 can apply 1, 3, 4, 6, 7
+Engineers2 can apply 2, 3, 4, 8, 9, 15
+
+How many options can there be for every test engineer to have 1 test line?
+
+Input range:
+userNum <= testlineNum
+1 <= userNum <= 10
+1 <= testlineNum <= 20
+
+The input of your program is 1 argument, the path of a CSV file, with the content as follow:
+testline_num, user_num
+user1_testline_list
+user2_testline_list
+...
+
+e.g.
+3, 2
+1, 2
+1, 2, 3
+
+The output of your program is a stdout print
+num_of_options
+
+e.g.
+4
+
+
+////////////////////中文分割线////////////////////
+
+诺基亚杭州研发中心有多条云测试线，编号为1，2，3，...，testlineNum；有多个测试工程师，编号为1，2，3，...，userNum。
+每名工程师需要在同一时间分别使用其中一条测试线(1 <= userNum <= testlineNum)。
+每条测试线只能分配给一个用户。
+每个工程师对测试线的需求是不同的，所以他们能申请的测试线不尽相同。
+例如:
+工程师1：可申请1, 3, 4, 6, 7；
+工程师2：可申请2, 3, 4, 8, 9, 15。
+
+要让每名工程师都能分配到一条合适的测试线，请计算有多少种分法？
+
+数据范围：
+userNum <= testlineNum
+1 <= userNum <= 10
+1 <= testlineNum <= 20
+
+你的程序输入只有一个参数，一个CSV文件的路径，包含如下内容:
+testline_num, user_num
+user1_testline_list
+user2_testline_list
+...
+
+例如
+3, 2
+1, 2
+1, 2, 3
+
+你的程序的输出是stdout标准打印输出.
+
+例如
+4
+
+
