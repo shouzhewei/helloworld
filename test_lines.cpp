@@ -33,42 +33,23 @@ void dfs(int un_idx, int un, int map[][MAXN], int* used, int* ret)
 int main(int args, char** argv)
 {
     freopen(argv[1], "r", stdin);
-    //freopen("output", "w", stdout);
 
     int tn, un;
     int map[MAXN][MAXN];
     while(scanf("%d, %d", &tn, &un)!=EOF)
     {
-        //printf("%d %d\n", tn, un);
-        char line[200];
+        char line[202];
         memset(map, 0, sizeof(map));
         for(int i=0; i<un; i++)
         {
             scanf("\n%[^\n]", &line);
-            //getchar();
             auto tok = strtok(line, ",");
             while (tok != nullptr)
             {
                 map[i][++map[i][0]] = atoi(tok);
                 tok = strtok(nullptr, ",");
             }
-            //char ch;
-            //while(1)
-            //{
-            //    scanf("%d", &map[i][++map[i][0]]);
-            //    ch = getchar();
-            //    if(ch == '\n')
-            //        break;
-            //}
         }
-        /*
-        for(int i=0; i<un; i++)
-        {
-            for(int j=0; j<=map[i][0]; j++)
-                printf("%d ", map[i][j]);
-            puts("");
-        }
-        */
 
         int ret=0;
         int used[MAXN];
@@ -79,7 +60,6 @@ int main(int args, char** argv)
     }
 
     fclose(stdin);
-    //fclose(stdout);
     return 0;
 }
 
