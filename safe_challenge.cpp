@@ -8,107 +8,128 @@ const int MAXN = 1002;
 const int MAXM = MAXN*MAXN;
 const int INF = 0x7FFFFFFF;
 
-int head[MAXN]; // edge num for head[i]
-int edge_cnt;   // total edge num
-int nv;         // total node num
-
-struct edge
+struct Node
 {
-    int v,next,cap,flow;
-}e[MAXM];
+    int from,to,next;
+    int cap;
+}edge[MAXM];
+int tol;
+int dep[MAXN];
+int head[MAXN];
 
-int cmp(const void* p1, const void* p2)
+void init()
 {
-    return *(int*)p1 - *(int*)p2;
+    tol=0;
+    memset(head, -1, sizeof(head));
 }
 
-void addedge(int u,int v,int cap)
+int cmp(const void* a, const void* b)
 {
-    //printf("%d -> %d : %d\n", u, v, cap);
-    //printf("%d -> %d : %d\n", v, u, 0);
-    e[edge_cnt].v=v;
-    e[edge_cnt].cap=cap;
-    e[edge_cnt].flow=0;
-    e[edge_cnt].next=head[u];
-    head[u]=edge_cnt++;
-
-    e[edge_cnt].v=u;
-    e[edge_cnt].cap=0;
-    e[edge_cnt].flow=0;
-    e[edge_cnt].next=head[v];
-    head[v]=edge_cnt++;
+    return *(int*)a - *(int*)b;
 }
 
-int gap[MAXN],dist[MAXN],pre[MAXN],curedge[MAXN];
-int minicut(int s, int t)
+void addedge(int u,int v,int w)
 {
-    int cur_flow, u, tmp, neck, i, max_flow=0;
-
-    memset(gap, 0, sizeof(gap));
-    memset(pre, -1, sizeof(pre));
-    memset(dist, 0, sizeof(dist));
-    memset(curedge, 0, sizeof(curedge));
-
-    for(i=1 ;i<=nv; i++)
+    if(u<MAXN && v<MAXN)
     {
-        curedge[i] = head[i];
+        edge[tol].from=u;
+        edge[tol].to=v;
+        edge[tol].cap=w;
+        edge[tol].next=head[u];
+        head[u]=tol++;
+        edge[tol].from=v;
+        edge[tol].to=u;
+        edge[tol].cap=0;
+        edge[tol].next=head[v];
+        head[v]=tol++;
     }
-    gap[nv] = nv;
-    u = s;
+}
 
-    while(dist[s] < nv)
+int BFS(int start,int end)
+{
+    int que[MAXN];
+    int front,rear;
+    front=rear=0;
+    memset(dep,-1,sizeof(dep));
+    que[rear++]=start;
+    dep[start]=0;
+
+    while(front!=rear)
     {
-        if(u == t)
+        int u=que[front++];
+        if(front==MAXN)front=0;
+        for(int i=head[u];i!=-1;i=edge[i].next)
         {
-            cur_flow = INF;
-            for(i=s; i!=t; i=e[curedge[i]].v)
+            int v=edge[i].to;
+            if(edge[i].cap>0&&dep[v]==-1)
             {
-                if(cur_flow > e[curedge[i]].cap)
-                {
-                    neck = i;
-                    cur_flow = e[curedge[i]].cap;
-                }
+                dep[v]=dep[u]+1;
+                que[rear++]=v;
+                if(rear>=MAXN)rear=0;
+                if(v==end)return 1;
             }
-            for(i=s; i!=t; i=e[curedge[i]].v)
-            {
-                tmp = curedge[i];
-                e[tmp].cap -= cur_flow;
-                e[tmp].flow += cur_flow;
-                tmp ^= 1;
-                e[tmp].cap += cur_flow;
-                e[tmp].flow -= cur_flow;
-            }
-            max_flow += cur_flow;
-            u = neck;
-        }
-        for(i = curedge[u]; i!=-1; i=e[i].next)
-        {
-            if(e[i].cap > 0 && dist[u] == dist[e[i].v]+1)
-                break;
-        }
-        if(i != -1)
-        {
-            curedge[u] = i;
-            pre[e[i].v] = u;
-            u = e[i].v;
-        }
-        else
-        {
-            if(0 == --gap[dist[u]])
-                break;
-            curedge[u] = head[u];
-            for(tmp = nv,i=head[u] ; i != -1; i = e[i].next)
-            {
-                if(e[i].cap > 0)
-                    tmp = tmp < dist[e[i].v] ? tmp : dist[e[i].v];
-            }
-            dist[u] = tmp+1;
-            ++gap[dist[u]];
-            if(u != s)
-                u = pre[u];
         }
     }
-    return max_flow;
+    return 0;
+}
+
+void update_res(int& res, int& u, int& top, int stack[])
+{
+    int min=INF;
+    int loc=0;
+    for(int i=0;i<top;i++)
+        if(min>edge[stack[i]].cap)
+        {
+            min=edge[stack[i]].cap;
+            loc=i;
+        }
+    for(int i=0;i<top;i++)
+    {
+        edge[stack[i]].cap-=min;
+        edge[stack[i]^1].cap+=min;
+    }
+    res+=min;
+    top=loc;
+    u=edge[stack[top]].from;
+}
+
+int minicut(int start,int end)
+{
+    int res=0;
+    int top;
+    int stack[MAXN];
+    int cur[MAXN];
+
+    while(BFS(start,end))
+    {
+        memcpy(cur,head,sizeof(head));
+        int u=start;
+        top=0;
+
+        while(1)
+        {
+            if(u==end)
+            {
+                update_res(res, u, top, stack);
+            }
+            for(int i=cur[u];i!=-1;cur[u]=i=edge[i].next)
+              if(edge[i].cap!=0&&dep[u]+1==dep[edge[i].to])
+                 break;
+            if(cur[u]!=-1)
+            {
+                stack[top++]=cur[u];
+                u=edge[cur[u]].to;
+            }
+            else
+            {
+                if(top==0) 
+                    break;
+                dep[u]=-1;
+                u=edge[stack[--top]].from;
+            }
+        }
+    }
+    return res;
 }
 
 void dfs(int v, int* visited, int* features, int* feature_num)
@@ -116,15 +137,15 @@ void dfs(int v, int* visited, int* features, int* feature_num)
     visited[v] = 1;
     features[(*feature_num)++] = v;
 
-    for(int i = head[v]; i != 0; i = e[i].next)
+    for(int i=head[v]; i>0; i=edge[i].next)
     {
-        int vs = e[i].v;
-        if(visited[vs]==0 && e[i].cap)
+        int vs = edge[i].to;
+        if(visited[vs]==0 && edge[i].cap > 0)
             dfs(vs, visited, features, feature_num);
     }
 }
 
-int main(int args, char** argv)
+int main(int, char** argv)
 {
     freopen(argv[1], "r", stdin);
 
@@ -136,32 +157,31 @@ int main(int args, char** argv)
         int s = 0;   // super source node
         int t = n+1; // super target node
         int sum = 0; // sum of positive weight
-        nv = n+2;    // total node number
 
-        edge_cnt=0;
-        memset(head,-1,sizeof(head));
-        memset(e,0,sizeof(e));
+		init();
 
         for(int i=1; i<=n; i++)
         {
+            char* pstr;
+
             scanf("\n%[^\n]", &linebuf);
-            int value = atoi(strtok(linebuf, " "));
+            int value = atoi(strtok_r(linebuf, " ", &pstr));
 
             if(value > 0)
             {
                 addedge(s, i, value);
                 sum += value;
             }
-            else
+            if(value < 0)
             {
                 addedge(i, t, -value);
             }
 
-            auto tok = strtok(nullptr, " ");
+            char* tok = strtok_r(nullptr, " ", &pstr);
             while (tok != nullptr)
             {
                 addedge(i, atoi(tok), INF);
-                tok = strtok(nullptr, " ");
+                tok = strtok_r(nullptr, " ", &pstr);
             }
         }
 
@@ -173,7 +193,6 @@ int main(int args, char** argv)
         memset(visited, 0, sizeof(visited));
         dfs(0, visited, features, &feature_num);
 
-        // print out
         printf("%d\n", sum-ret);
         qsort(features, feature_num, sizeof(int), cmp);
         for(int i=1; i<feature_num; i++)

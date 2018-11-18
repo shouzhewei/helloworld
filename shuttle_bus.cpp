@@ -6,19 +6,23 @@ using namespace std;
 
 const int MAXN = 105;
 
-int main(int args, char** argv)
+int main(int, char** argv)
 {
     freopen(argv[1], "r", stdin);
 
-    int n, m;
+    int n;
+    int m;
     int map[MAXN][MAXN];
+
     while(scanf("%d, %d", &m, &n)!=EOF)
     {
         memset(map, 0, sizeof(map));
 
         for(int i=1; i<=n; i++)
         {
-            int j, val;
+            int j;
+            int val;
+
             for(j=1; j<m; j++)
             {
                 scanf("%d,", &val);

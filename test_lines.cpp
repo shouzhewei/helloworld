@@ -30,11 +30,12 @@ void dfs(int un_idx, int un, int map[][MAXN], int* used, int* ret)
     }
 }
 
-int main(int args, char** argv)
+int main(int, char** argv)
 {
     freopen(argv[1], "r", stdin);
 
-    int tn, un;
+    int tn;
+    int un;
     int map[MAXN][MAXN];
     while(scanf("%d, %d", &tn, &un)!=EOF)
     {
@@ -43,11 +44,13 @@ int main(int args, char** argv)
         for(int i=0; i<un; i++)
         {
             scanf("\n%[^\n]", &line);
-            auto tok = strtok(line, ",");
+
+            char* p;
+            char* tok = strtok_r(line, ",", &p);
             while (tok != nullptr)
             {
                 map[i][++map[i][0]] = atoi(tok);
-                tok = strtok(nullptr, ",");
+                tok = strtok_r(nullptr, ",", &p);
             }
         }
 
