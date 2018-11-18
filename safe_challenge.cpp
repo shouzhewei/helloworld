@@ -10,12 +10,16 @@ const int INF = 0x7FFFFFFF;
 
 struct Node
 {
-    int from,to,next;
+    int from;
+    int to;
+    int next;
     int cap;
-}edge[MAXM];
+};
+
 int tol;
 int dep[MAXN];
 int head[MAXN];
+struct Node edge[MAXM];
 
 void init()
 {
@@ -23,14 +27,19 @@ void init()
     memset(head, -1, sizeof(head));
 }
 
-int cmp(const void* a, const void* b)
+inline int cmp(const void* a, const void* b)
 {
     return *(int*)a - *(int*)b;
 }
 
-void addedge(int u,int v,int w)
+inline void printout(int val)
 {
-    if(u<MAXN && v<MAXN)
+    printf("%d\n", val);
+}
+
+inline void addedge(int u,int v,int w)
+{
+    if(u>=0 && u<MAXN && v>=0 && v<MAXN)
     {
         edge[tol].from=u;
         edge[tol].to=v;
@@ -48,7 +57,8 @@ void addedge(int u,int v,int w)
 int BFS(int start,int end)
 {
     int que[MAXN];
-    int front,rear;
+    int front;
+    int rear;
     front=rear=0;
     memset(dep,-1,sizeof(dep));
     que[rear++]=start;
@@ -97,7 +107,7 @@ int minicut(int start,int end)
 {
     int res=0;
     int top;
-    int stack[MAXN];
+    int stack[MAXN] = {0};
     int cur[MAXN];
 
     while(BFS(start,end))
@@ -164,7 +174,7 @@ int main(int, char** argv)
         {
             char* pstr;
 
-            scanf("\n%[^\n]", &linebuf);
+            scanf("\n%[^\n]", linebuf);
             int value = atoi(strtok_r(linebuf, " ", &pstr));
 
             if(value > 0)
@@ -193,10 +203,10 @@ int main(int, char** argv)
         memset(visited, 0, sizeof(visited));
         dfs(0, visited, features, &feature_num);
 
-        printf("%d\n", sum-ret);
+        printout(sum-ret);
         qsort(features, feature_num, sizeof(int), cmp);
         for(int i=1; i<feature_num; i++)
-            printf("%d\n", features[i]);
+            printout(features[i]);
     }
 
     fclose(stdin);

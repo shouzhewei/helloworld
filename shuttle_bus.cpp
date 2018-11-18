@@ -1,10 +1,14 @@
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
-#include <iostream>
-using namespace std;
 
 const int MAXN = 105;
+
+int map[MAXN][MAXN];
+
+inline int max(int a, int b)
+{
+    return a > b ? a : b;
+}
 
 int main(int, char** argv)
 {
@@ -12,7 +16,6 @@ int main(int, char** argv)
 
     int n;
     int m;
-    int map[MAXN][MAXN];
 
     while(scanf("%d, %d", &m, &n)!=EOF)
     {
