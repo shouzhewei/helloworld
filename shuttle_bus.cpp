@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstring>
 
-const int MAXN = 105;
+const int MAXN = 102;
 
 int map[MAXN][MAXN];
 
@@ -19,8 +19,6 @@ int main(int, char** argv)
 
     while(scanf("%d, %d", &m, &n)!=EOF)
     {
-        memset(map, 0, sizeof(map));
-
         for(int i=1; i<=n; i++)
         {
             int j;
@@ -29,10 +27,10 @@ int main(int, char** argv)
             for(j=1; j<m; j++)
             {
                 scanf("%d,", &val);
-                map[i][j] = max(map[i-1][j] + val, map[i][j-1] + val);
+                map[i][j] = max(map[i-1][j], map[i][j-1]) + val;
             }
             scanf("%d", &val);
-            map[i][j] = max(map[i-1][j] + val, map[i][j-1] + val);
+            map[i][j] = max(map[i-1][j], map[i][j-1]) + val;
         }
 
         printf("%d\n", map[n][m]);
