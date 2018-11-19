@@ -2,12 +2,13 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-using namespace std;
+#include <algorithm>
 
 const int MAXN = 1002;
 const int MAXM = MAXN*MAXN;
 const int INF = 0x7FFFFFFF;
 
+namespace {
 struct Node
 {
     int from;
@@ -25,11 +26,6 @@ void init()
 {
     tol=0;
     memset(head, -1, sizeof(head));
-}
-
-inline int cmp(const void* a, const void* b)
-{
-    return *(int*)a - *(int*)b;
 }
 
 inline void printout(int val)
@@ -54,6 +50,21 @@ inline void addedge(int u,int v,int w)
     }
 }
 
+int updategraph(int& rear, int& u, int& end, int(&que)[MAXN])
+{
+    for(int i=head[u];i!=-1;i=edge[i].next)
+    {
+        int v=edge[i].to;
+        if(edge[i].cap>0&&dep[v]==-1)
+        {
+            dep[v]=dep[u]+1;
+            que[rear++]=v;
+            if(rear>=MAXN)rear=0;
+            if(v==end)return 1;
+        }
+    }
+}
+
 int BFS(int start,int end)
 {
     int que[MAXN];
@@ -68,22 +79,14 @@ int BFS(int start,int end)
     {
         int u=que[front++];
         if(front==MAXN)front=0;
-        for(int i=head[u];i!=-1;i=edge[i].next)
-        {
-            int v=edge[i].to;
-            if(edge[i].cap>0&&dep[v]==-1)
-            {
-                dep[v]=dep[u]+1;
-                que[rear++]=v;
-                if(rear>=MAXN)rear=0;
-                if(v==end)return 1;
-            }
-        }
+
+        if(updategraph(rear, u, end, que) == 1)
+            return 1;
     }
     return 0;
 }
 
-void update_res(int& res, int& u, int& top, int stack[])
+void updateres(int& res, int& u, int& top, int(&stack)[MAXN])
 {
     int min=INF;
     int loc=0;
@@ -120,7 +123,7 @@ int minicut(int start,int end)
         {
             if(u==end)
             {
-                update_res(res, u, top, stack);
+                updateres(res, u, top, stack);
             }
             for(int i=cur[u];i!=-1;cur[u]=i=edge[i].next)
               if(edge[i].cap!=0&&dep[u]+1==dep[edge[i].to])
@@ -132,7 +135,7 @@ int minicut(int start,int end)
             }
             else
             {
-                if(top==0) 
+                if(top==0)
                     break;
                 dep[u]=-1;
                 u=edge[stack[--top]].from;
@@ -142,17 +145,18 @@ int minicut(int start,int end)
     return res;
 }
 
-void dfs(int v, int* visited, int* features, int* feature_num)
+void dfs(int v, int* visited, int* features, int* featurenum)
 {
     visited[v] = 1;
-    features[(*feature_num)++] = v;
+    features[(*featurenum)++] = v;
 
     for(int i=head[v]; i>0; i=edge[i].next)
     {
         int vs = edge[i].to;
         if(visited[vs]==0 && edge[i].cap > 0)
-            dfs(vs, visited, features, feature_num);
+            dfs(vs, visited, features, featurenum);
     }
+}
 }
 
 int main(int, char** argv)
@@ -164,11 +168,11 @@ int main(int, char** argv)
 
     while(scanf("%d", &n) != EOF)
     {
-        int s = 0;   // super source node
-        int t = n+1; // super target node
-        int sum = 0; // sum of positive weight
+        int s = 0;
+        int t = n+1;
+        int sum = 0;
 
-		init();
+        init();
 
         for(int i=1; i<=n; i++)
         {
@@ -197,16 +201,23 @@ int main(int, char** argv)
 
         int ret = minicut(s, t);
         int visited[MAXN];
-        int features[MAXN];   // output features
-        int feature_num = 0;  // output feature number
+        int features[MAXN];
+        int featurenum = 0;
 
         memset(visited, 0, sizeof(visited));
-        dfs(0, visited, features, &feature_num);
+        dfs(0, visited, features, &featurenum);
 
-        printout(sum-ret);
-        qsort(features, feature_num, sizeof(int), cmp);
-        for(int i=1; i<feature_num; i++)
-            printout(features[i]);
+        if(sum-ret > 0)
+        {
+            printout(sum-ret);
+            std::sort(features, features+featurenum);
+            for(int i=1; i<featurenum; i++)
+                printout(features[i]);
+        }
+        else
+        {
+            printout(0);
+        }
     }
 
     fclose(stdin);

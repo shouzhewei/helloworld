@@ -3,11 +3,13 @@
 
 const int MAXN = 102;
 
+namespace {
 int map[MAXN][MAXN];
 
 inline int max(int a, int b)
 {
     return a > b ? a : b;
+}
 }
 
 int main(int, char** argv)

@@ -3,14 +3,16 @@
 #include <cstring>
 
 const int MAXN = 129;
+const int NUMS = 10;
 
+namespace {
 char a[102];
 char b[102];
 char c[102];
 char variables[129];
 char selected_variables[129];
 
-void format_print(char* vmap)
+void formatprint(char* vmap)
 {
     int cnt = 0;
     char output[102];
@@ -36,7 +38,7 @@ void format_print(char* vmap)
     printf("%s\n", output);
 }
 
-int calc_value(char* str, char* vmap)
+int calcvalue(char* str, char* vmap)
 {
     int ret = 0;
 
@@ -48,40 +50,37 @@ int calc_value(char* str, char* vmap)
 
 void calc(char* vmap)
 {
-    int va = calc_value(a, vmap);
-    int vb = calc_value(b, vmap);
-    int vc = calc_value(c, vmap);
+    int va = calcvalue(a, vmap);
+    int vb = calcvalue(b, vmap);
+    int vc = calcvalue(c, vmap);
 
     if((va * vb == vc) && (vmap[a[0]] != 0 && vmap[b[0]] != 0 && vmap[c[0]] != 0))
     {
-        format_print(vmap);
+        formatprint(vmap);
     }
 }
 
 void vloop(int idx, char* vmap, int* used, int cnt)
 {
-    for(int i=0; i<10; i++)
+    for(int i=0; i<NUMS; i++)
     {
-        if(used[i])
-        {
-            continue;
-        }
-        else
+        if(used[i] == 0)
         {
             used[i] = 1;
             vmap[selected_variables[idx]] = i;
-        }
 
-        if(idx == cnt-1)
-        {
-            calc(vmap);
+            if(idx == cnt-1)
+            {
+                calc(vmap);
+            }
+            else
+            {
+                vloop(idx+1, vmap, used, cnt);
+            }
+            used[i] = 0;
         }
-        else
-        {
-            vloop(idx+1, vmap, used, cnt);
-        }
-        used[i] = 0;
     }
+}
 }
 
 int main(int, char** argv)
@@ -101,11 +100,11 @@ int main(int, char** argv)
                 variables[c[i]] = 1;
         }
 
-        int var_cnt=0;
+        int varcnt=0;
         for(int i=0; i<MAXN; i++)
         {
             if(variables[i])
-                selected_variables[var_cnt++] = i;
+                selected_variables[varcnt++] = i;
         }
 
         char vmap[MAXN];
@@ -113,7 +112,7 @@ int main(int, char** argv)
         memset(vmap, 0, sizeof(vmap));
         memset(used, 0, sizeof(used));
 
-        vloop(0, vmap, used, var_cnt);
+        vloop(0, vmap, used, varcnt);
     }
 
     fclose(stdin);

@@ -2,32 +2,31 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-using namespace std;
 
 const int MAXN = 22;
 
-void dfs(int un_idx, int un, int map[][MAXN], int* used, int* ret)
+namespace {
+void dfs(int unidx, int un, int map[][MAXN], int* used, int* ret)
 {
-    for(int i=1; i<=map[un_idx][0]; i++)
+    for(int i=1; i<=map[unidx][0]; i++)
     {
-        if(used[map[un_idx][i]])
-            continue;
-        else
+        if(used[map[unidx][i]] == 0 )
         {
-            used[map[un_idx][i]] = 1;
-        }
+            used[map[unidx][i]] = 1;
 
-        if(un_idx == un-1)
-        {
-            (*ret)++;
-        }
-        else
-        {
-            dfs(un_idx+1, un, map, used, ret);
-        }
+            if(unidx == un-1)
+            {
+                (*ret)++;
+            }
+            else
+            {
+                dfs(unidx+1, un, map, used, ret);
+            }
 
-        used[map[un_idx][i]] = 0;
+            used[map[unidx][i]] = 0;
+        }
     }
+}
 }
 
 int main(int, char** argv)
