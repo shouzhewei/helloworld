@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 
-const int MAXN = 1002;
+const int MAXN = 2005;
 const int MAXM = MAXN*MAXN;
 const int INF = 0x7FFFFFFF;
 
@@ -30,7 +30,7 @@ void init()
 
 inline void printout(int val)
 {
-    printf("%d\n", val);
+    fprintf(stdout, "%d\n", val);
 }
 
 inline void addedge(int u,int v,int w)
@@ -65,7 +65,7 @@ int updategraph(int& rear, int& u, int& end, int(&que)[MAXN])
     }
 }
 
-int BFS(int start,int end)
+int bfs(int start,int end)
 {
     int que[MAXN];
     int front;
@@ -106,6 +106,32 @@ void updateres(int& res, int& u, int& top, int(&stack)[MAXN])
     u=edge[stack[top]].from;
 }
 
+bool updatepath(int start, int end, int& u, int& res, int& top, int(&stack)[MAXN], int(&cur)[MAXN])
+{
+    if(u==end)
+    {
+        updateres(res, u, top, stack);
+    }
+    for(int i=cur[u];i!=-1;cur[u]=i=edge[i].next)
+    {
+        if(edge[i].cap!=0&&dep[u]+1==dep[edge[i].to])
+            break;
+    }
+    if(cur[u]!=-1)
+    {
+        stack[top++]=cur[u];
+        u=edge[cur[u]].to;
+    }
+    else
+    {
+        if(top==0)
+            return false;
+        dep[u]=-1;
+        u=edge[stack[--top]].from;
+    }
+    return true;
+}
+
 int minicut(int start,int end)
 {
     int res=0;
@@ -113,7 +139,7 @@ int minicut(int start,int end)
     int stack[MAXN] = {0};
     int cur[MAXN];
 
-    while(BFS(start,end))
+    while(bfs(start,end))
     {
         memcpy(cur,head,sizeof(head));
         int u=start;
@@ -121,25 +147,8 @@ int minicut(int start,int end)
 
         while(1)
         {
-            if(u==end)
-            {
-                updateres(res, u, top, stack);
-            }
-            for(int i=cur[u];i!=-1;cur[u]=i=edge[i].next)
-              if(edge[i].cap!=0&&dep[u]+1==dep[edge[i].to])
-                 break;
-            if(cur[u]!=-1)
-            {
-                stack[top++]=cur[u];
-                u=edge[cur[u]].to;
-            }
-            else
-            {
-                if(top==0)
-                    break;
-                dep[u]=-1;
-                u=edge[stack[--top]].from;
-            }
+            if(updatepath(start, end, u, res, top, stack, cur) == false)
+                break;
         }
     }
     return res;
@@ -150,11 +159,37 @@ void dfs(int v, int* visited, int* features, int* featurenum)
     visited[v] = 1;
     features[(*featurenum)++] = v;
 
-    for(int i=head[v]; i>0; i=edge[i].next)
+    for(int i=head[v]; i>=0; i=edge[i].next)
     {
         int vs = edge[i].to;
         if(visited[vs]==0 && edge[i].cap > 0)
             dfs(vs, visited, features, featurenum);
+    }
+}
+
+void runaddedge(int s, int t, int cur, int& sum, char* linebuf)
+{
+    char* pstr;
+    int value = atoi(strtok_r(linebuf, " ", &pstr));
+
+    if(value > 0)
+    {
+        addedge(s, cur, value);
+        sum += value;
+    }
+    if(value < 0)
+    {
+        addedge(cur, t, -value);
+    }
+
+    if(value != 0)
+    {
+        char* tok = strtok_r(nullptr, " ", &pstr);
+        while (tok != nullptr)
+        {
+            addedge(cur, atoi(tok), INF);
+            tok = strtok_r(nullptr, " ", &pstr);
+        }
     }
 }
 }
@@ -164,7 +199,7 @@ int main(int, char** argv)
     freopen(argv[1], "r", stdin);
 
     int n;
-    char linebuf[500];
+    char linebuf[5000];
 
     while(scanf("%d", &n) != EOF)
     {
@@ -176,27 +211,8 @@ int main(int, char** argv)
 
         for(int i=1; i<=n; i++)
         {
-            char* pstr;
-
             scanf("\n%[^\n]", linebuf);
-            int value = atoi(strtok_r(linebuf, " ", &pstr));
-
-            if(value > 0)
-            {
-                addedge(s, i, value);
-                sum += value;
-            }
-            if(value < 0)
-            {
-                addedge(i, t, -value);
-            }
-
-            char* tok = strtok_r(nullptr, " ", &pstr);
-            while (tok != nullptr)
-            {
-                addedge(i, atoi(tok), INF);
-                tok = strtok_r(nullptr, " ", &pstr);
-            }
+            runaddedge(s, t, i, sum, linebuf);
         }
 
         int ret = minicut(s, t);

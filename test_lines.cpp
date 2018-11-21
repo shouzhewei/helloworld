@@ -58,7 +58,7 @@ int main(int, char** argv)
         memset(used, 0, sizeof(used));
         dfs(0, un, map, used, &ret);
 
-        printf("%d\n", ret);
+        fprintf(stdout, "%d\n", ret);
     }
 
     fclose(stdin);

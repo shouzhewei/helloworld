@@ -48,7 +48,7 @@ inline bool isalpha(char ch)
 
 inline void printout(std::string name, std::string gendor)
 {
-    std::cout << name << "," << gendor << std::endl;
+    fprintf(stdout, "%s,%s\n", name.c_str(), gendor.c_str());
 }
 
 inline int insert(const char* word, bool ismale)

@@ -35,7 +35,7 @@ void formatprint(char* vmap)
         output[cnt++] = vmap[c[i]] + '0';
 
     output[cnt] = '\0';
-    printf("%s\n", output);
+    fprintf(stdout, "%s\n", output);
 }
 
 int calcvalue(char* str, char* vmap)

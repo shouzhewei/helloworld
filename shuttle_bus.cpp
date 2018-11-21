@@ -18,14 +18,13 @@ int main(int, char** argv)
 
     int n;
     int m;
+    int j;
+    int val;
 
     while(scanf("%d, %d", &m, &n)!=EOF)
     {
         for(int i=1; i<=n; i++)
         {
-            int j;
-            int val;
-
             for(j=1; j<m; j++)
             {
                 scanf("%d,", &val);
@@ -35,7 +34,7 @@ int main(int, char** argv)
             map[i][j] = max(map[i-1][j], map[i][j-1]) + val;
         }
 
-        printf("%d\n", map[n][m]);
+        fprintf(stdout, "%d\n", map[n][m]);
     }
 
     fclose(stdin);
