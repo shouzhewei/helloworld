@@ -10,7 +10,7 @@ char a[102];
 char b[102];
 char c[102];
 char variables[129];
-char selected_variables[129];
+char selectedvariables[129];
 
 void formatprint(char* vmap)
 {
@@ -67,11 +67,14 @@ void vloop(int idx, char* vmap, int* used, int cnt)
         if(used[i] == 0)
         {
             used[i] = 1;
-            vmap[selected_variables[idx]] = i;
+            vmap[selectedvariables[idx]] = i;
 
             if(idx == cnt-1)
             {
                 calc(vmap);
+            }
+            else if(idx == 2 && (vmap[a[strlen(a)-1]] * vmap[b[strlen(b)-1]])%10 !=  vmap[c[strlen(c)-1]])
+            {
             }
             else
             {
@@ -81,6 +84,21 @@ void vloop(int idx, char* vmap, int* used, int cnt)
         }
     }
 }
+
+void sortselectedvariables(int& varcnt, char ch)
+{
+    int i;
+    for(i=0; i<varcnt; i++)
+    {
+        if(selectedvariables[i] == ch)
+            break;
+    }
+    if(i == varcnt)
+    {
+        selectedvariables[varcnt++] = ch;
+    }
+}
+
 }
 
 int main(int, char** argv)
@@ -90,21 +108,31 @@ int main(int, char** argv)
     while(scanf("%100s * %100s = %100s", a, b, c)!=EOF)
     {
         memset(variables, 0, sizeof(variables));
-        for (int i=0; a[i]!='\0' || b[i]!='\0' || c[i]!='\0'; i++)
-        {
-            if(a[i]!='\0')
-                variables[a[i]] = 1;
-            if(b[i]!='\0')
-                variables[b[i]] = 1;
-            if(c[i]!='\0')
-                variables[c[i]] = 1;
-        }
-
         int varcnt=0;
-        for(int i=0; i<MAXN; i++)
+        int depth=0;
+        int i = strlen(a) - 1;
+        int j = strlen(b) - 1;
+        int k = strlen(c) - 1;
+
+        while(true)
         {
-            if(variables[i])
-                selected_variables[varcnt++] = i;
+            if(i<0 && j<0 && k<0)
+                break;
+            if(i >= 0)
+            {
+                sortselectedvariables(varcnt, a[i]);
+                i--;
+            }
+            if(j >= 0)
+            {
+                sortselectedvariables(varcnt, b[j]);
+                j--;
+            }
+            if(k >= 0)
+            {
+                sortselectedvariables(varcnt, c[k]);
+                k--;
+            }
         }
 
         char vmap[MAXN];
