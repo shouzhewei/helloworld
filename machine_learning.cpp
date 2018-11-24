@@ -28,10 +28,10 @@ double gtrainingmalestrnum = 0;
 double gtrainingfemalestrnum = 0;
 double gfact = 0;
 
-double gindex = 212.6;
+double gindex = 0.0;
 double gregstep = 0.1;
-int gmaxloop = 5000;
-bool gregflag = false;
+int gmaxloop = 3000;
+bool gregflag = true;
 std::map<std::string, bool> gtraindata;
 
 inline int min(int a, int b)
@@ -245,6 +245,7 @@ int main(int, char** argv)
     runtraining();
 
     runregression();
+    printf("%lf\n", gindex);
 
     runpredict(argv[1]);
 

@@ -4,6 +4,8 @@
 
 const int MAXN = 129;
 const int NUMS = 10;
+const int TWO = 2;
+const int TEN = 10;
 
 namespace {
 char a[102];
@@ -73,8 +75,9 @@ void vloop(int idx, char* vmap, int* used, int cnt)
             {
                 calc(vmap);
             }
-            else if(idx == 2 && (vmap[a[strlen(a)-1]] * vmap[b[strlen(b)-1]])%10 !=  vmap[c[strlen(c)-1]])
+            else if(idx == TWO && (vmap[a[strlen(a)-1]] * vmap[b[strlen(b)-1]])%TEN !=  vmap[c[strlen(c)-1]])
             {
+                used[i] = 0;
             }
             else
             {

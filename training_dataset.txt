@@ -2155,7 +2155,8 @@ Collin,male
 Johnathan,male
 Jeremiah,male
 Rupert,male
-Hillelhristophe,male
+Hillel,male
+Christophe,male
 Kelwin,male
 Gilbert,male
 Gunner,male
@@ -5515,7 +5516,7 @@ Julianne,female
 Murial,female
 Lory,female
 Kiley,female
-Truda,fema:le
+Truda,female
 Paola,female
 Shelli,female
 Eveleen,female
