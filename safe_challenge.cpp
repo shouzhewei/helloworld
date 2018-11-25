@@ -4,8 +4,8 @@
 #include <iostream>
 #include <algorithm>
 
-const int MAXN = 2005;
-const int MAXM = MAXN*MAXN;
+const int MAXN = 1005;
+const int MAXM = MAXN*MAXN*2 + MAXN*2;
 const int INF = 0x7FFFFFFF;
 
 namespace {
@@ -199,7 +199,7 @@ int main(int, char** argv)
     freopen(argv[1], "r", stdin);
 
     int n;
-    char linebuf[5000];
+    char linebuf[10000];
 
     while(scanf("%d", &n) != EOF)
     {
